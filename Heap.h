@@ -113,7 +113,9 @@ class Heap{
 
 
     public:
-        Heap(): cap(1), size(0), data_arr(nullptr){};
+        Heap(): cap(1), size(0), data_arr(nullptr){
+            data_arr = new T[cap];
+        };
         Heap(int startCap): cap(startCap), size(0), data_arr(nullptr){
             data_arr = new T[startCap];
         };
@@ -127,7 +129,6 @@ class Heap{
         void bubble_up(int startIndex) {
             int index = startIndex;
             while(parent_i(index) >= 0 && compare(data_arr[parent_i(index)], data_arr[index])) {
-                //swap the vals
                 T temp(std::move(data_arr[index]));
                 data_arr[index] = std::move(data_arr[parent_i(index)]);
                 data_arr[parent_i(index)] = std::move(temp);
@@ -140,15 +141,12 @@ class Heap{
             bubble_up(size - 1);
         }
 
-        void insert(T data) {
+        void insert(T& data) {
             push_back(data); //insert the data into the open space in the array
             bubble_up(size - 1);
         }
+
+        
 };
-
-
-
-
-
 
 #endif
