@@ -9,23 +9,17 @@ class HugeClass {
         int my_num;
 
     public:
-
-        static int instanceNum;
-
-        HugeClass(): large_data(nullptr), data_size(100){
-            std::cout << "Default Constructor" << std::endl;
+        HugeClass(): large_data(nullptr), data_size(100), my_num(0){
             large_data = new int[data_size]; 
 
             
         }
 
-        HugeClass(int dataSize): large_data(nullptr), data_size(dataSize), my_num(instanceNum++) {
-            std::cout << "Value Constructor" << std::endl;
+        HugeClass(int dataSize, int my_num): large_data(nullptr), data_size(dataSize), my_num(my_num) {
             large_data = new int[data_size]; 
         }
 
         HugeClass(const HugeClass & rhs) {
-            std::cout << "Copy Constructor" << std::endl;
             large_data = new int[rhs.data_size];
             data_size = rhs.data_size;
             my_num = rhs.my_num;
@@ -35,14 +29,12 @@ class HugeClass {
         }
 
         HugeClass(HugeClass&& other): large_data(other.large_data) { //move constructor
-            std::cout << "Move Constructor" << std::endl;
             data_size = other.data_size;
             my_num = other.my_num;
             other.large_data = nullptr;
         }
 
         HugeClass & operator= (HugeClass && rhs) { //move operator =
-            std::cout << "Move Operator=" << std::endl;
             if(this != &rhs) {
                 delete[] large_data;
                 data_size = rhs.data_size;
@@ -54,7 +46,6 @@ class HugeClass {
         }
 
         HugeClass & operator= (const HugeClass & rhs) {
-            std::cout << "Assignment Operator" << std::endl;
             my_num = rhs.my_num;
             data_size = rhs.data_size;
             for(int i = 0; i < 10000; i++) {

@@ -126,13 +126,35 @@ class Heap{
 
         friend std::ostream & operator<<<T>(std::ostream&, const Heap<T> &);
 
+        void swap(int a, int b) {
+            T temp(std::move(data_arr[a]));
+            data_arr[a] = std::move(data_arr[b]);
+            data_arr[b] = std::move(temp);
+        }
+
         void bubble_up(int startIndex) {
             int index = startIndex;
             while(parent_i(index) >= 0 && compare(data_arr[parent_i(index)], data_arr[index])) {
-                T temp(std::move(data_arr[index]));
-                data_arr[index] = std::move(data_arr[parent_i(index)]);
-                data_arr[parent_i(index)] = std::move(temp);
+                swap(index, parent_i(index));
                 index = parent_i(index);
+            }
+        }
+
+        void bubble_down(int startIndex) {
+            int index = startIndex;
+            while(left_i(index) < size) {
+                if (right_i(index) < size) {
+                    int higher = (data_arr[left_i(index)] < data_arr[right_i(index)]) ? 
+                                    right_i(index) :
+                                    left_i(index);
+                    if(data_arr[higher] < data_arr[index]) return;
+                    swap(index, higher);
+                    index = higher;
+                } else {
+                    if(data_arr[left_i(index)] < data_arr[index]) return;
+                    swap(index, left_i(index));
+                    index = left_i(index);
+                }
             }
         }
 
@@ -144,6 +166,19 @@ class Heap{
         void insert(T& data) {
             push_back(data); //insert the data into the open space in the array
             bubble_up(size - 1);
+        }
+
+        T&& extractMax() {
+            if(size == 1) {
+                size -=1;
+                return std::move(data_arr[size]);
+            } 
+            else {
+                swap(0, size - 1);
+                size -= 1;
+                bubble_down(0);
+                return std::move(data_arr[size]);
+            }
         }
 
         
