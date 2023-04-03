@@ -142,16 +142,16 @@ class Heap{
 
         void bubble_down(int startIndex) {
             int index = startIndex;
-            while(left_i(index) < size) {
-                if (right_i(index) < size) {
-                    int higher = (data_arr[left_i(index)] < data_arr[right_i(index)]) ? 
+            while(left_i(index) >= 0) {
+                if (right_i(index) >= 0) {
+                    int higher = (compare(data_arr[left_i(index)], data_arr[right_i(index)])) ? 
                                     right_i(index) :
                                     left_i(index);
-                    if(data_arr[higher] < data_arr[index]) return;
+                    if(compare(data_arr[higher], data_arr[index])) return;
                     swap(index, higher);
                     index = higher;
                 } else {
-                    if(data_arr[left_i(index)] < data_arr[index]) return;
+                    if(compare(data_arr[left_i(index)], data_arr[index])) return;
                     swap(index, left_i(index));
                     index = left_i(index);
                 }
@@ -179,9 +179,7 @@ class Heap{
                 bubble_down(0);
                 return std::move(data_arr[size]);
             }
-        }
-
-        
+        }  
 };
 
 #endif
